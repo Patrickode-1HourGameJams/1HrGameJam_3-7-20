@@ -6,25 +6,25 @@ public class SegmentFollow : MonoBehaviour
 {
     [SerializeField]
     private GameObject player;
-    private Vector3 offset;
+    private float offset;
 
     [SerializeField]
     private int orderInSnake;
 
     void Start()
     {
-        offset = transform.position - player.transform.position;
+        offset = (transform.position.z - player.transform.position.z);
     }
 
     void Update()
     {
-        transform.position = new Vector3
+        transform.position = Vector3.Lerp
             (
-                player.transform.position.x + offset.x,
-                player.transform.position.y + offset.y,
-                player.transform.position.z + offset.z
+                transform.position,
+                player.transform.position - player.transform.forward * -offset,
+                0.9f
             );
 
-        transform.LookAt(player.transform);
+        transform.forward = Vector3.Lerp(transform.forward, player.transform.forward, 0.9f);
     }
 }
